@@ -1,0 +1,313 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>法律智能助手 - AI 法律顾问</title>
+    <link rel="stylesheet" href="/static/style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+<body>
+    <!-- ========== 登录/注册/忘记密码 页面 ========== -->
+    <div id="auth-page" class="auth-page">
+        <div class="auth-container">
+            <!-- 左侧品牌区 -->
+            <div class="auth-brand">
+                <div class="auth-brand-icon">
+                    <i class="fas fa-balance-scale"></i>
+                </div>
+                <h2>法律智能助手</h2>
+                <p>基于 LangGraph 多智能体架构</p>
+                <div class="auth-brand-features">
+                    <div class="auth-brand-feature">
+                        <i class="fas fa-robot"></i>
+                        <span>13+ AI 专家协作</span>
+                    </div>
+                    <div class="auth-brand-feature">
+                        <i class="fas fa-search"></i>
+                        <span>RAG 知识库检索</span>
+                    </div>
+                    <div class="auth-brand-feature">
+                        <i class="fas fa-file-contract"></i>
+                        <span>合同审查 · 文书生成</span>
+                    </div>
+                    <div class="auth-brand-feature">
+                        <i class="fas fa-calculator"></i>
+                        <span>法律精确计算</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 右侧表单区 -->
+            <div class="auth-form-area">
+                <!-- 登录表单 -->
+                <div id="auth-login" class="auth-form">
+                    <h3>欢迎回来</h3>
+                    <p class="auth-subtitle">登录你的账号，继续使用</p>
+                    <div class="auth-form-group">
+                        <label><i class="fas fa-envelope"></i> 邮箱</label>
+                        <input type="email" id="login-email" placeholder="请输入邮箱地址">
+                    </div>
+                    <div class="auth-form-group">
+                        <label><i class="fas fa-lock"></i> 密码</label>
+                        <input type="password" id="login-password" placeholder="请输入密码">
+                    </div>
+                    <div id="login-error" class="auth-error" style="display:none;"></div>
+                    <button class="auth-submit-btn" onclick="handleLogin()">
+                        <i class="fas fa-sign-in-alt"></i> 登 录
+                    </button>
+                    <div class="auth-links">
+                        <a href="javascript:void(0)" onclick="switchAuthView('forgot')">忘记密码？</a>
+                        <a href="javascript:void(0)" onclick="switchAuthView('register')">没有账号？去注册</a>
+                    </div>
+                </div>
+
+                <!-- 注册表单 -->
+                <div id="auth-register" class="auth-form" style="display:none;">
+                    <h3>创建账号</h3>
+                    <p class="auth-subtitle">注册后即可使用全部功能</p>
+                    <div class="auth-form-group">
+                        <label><i class="fas fa-envelope"></i> 邮箱</label>
+                        <input type="email" id="register-email" placeholder="请输入邮箱地址">
+                    </div>
+                    <div class="auth-form-group">
+                        <label><i class="fas fa-lock"></i> 密码</label>
+                        <input type="password" id="register-password" placeholder="至少6位密码">
+                    </div>
+                    <div class="auth-form-group">
+                        <label><i class="fas fa-shield-halved"></i> 验证码</label>
+                        <div class="auth-code-row">
+                            <input type="text" id="register-code" placeholder="6位验证码" maxlength="6">
+                            <button class="auth-code-btn" id="register-send-code-btn" onclick="sendCode('register')">
+                                获取验证码
+                            </button>
+                        </div>
+                    </div>
+                    <div id="register-error" class="auth-error" style="display:none;"></div>
+                    <div id="register-success" class="auth-success" style="display:none;"></div>
+                    <button class="auth-submit-btn" onclick="handleRegister()">
+                        <i class="fas fa-user-plus"></i> 注 册
+                    </button>
+                    <div class="auth-links">
+                        <a href="javascript:void(0)" onclick="switchAuthView('login')">已有账号？去登录</a>
+                    </div>
+                </div>
+
+                <!-- 忘记密码表单 -->
+                <div id="auth-forgot" class="auth-form" style="display:none;">
+                    <h3>重置密码</h3>
+                    <p class="auth-subtitle">输入注册邮箱，验证后设置新密码</p>
+                    <div class="auth-form-group">
+                        <label><i class="fas fa-envelope"></i> 邮箱</label>
+                        <input type="email" id="forgot-email" placeholder="请输入注册邮箱">
+                    </div>
+                    <div class="auth-form-group">
+                        <label><i class="fas fa-shield-halved"></i> 验证码</label>
+                        <div class="auth-code-row">
+                            <input type="text" id="forgot-code" placeholder="6位验证码" maxlength="6">
+                            <button class="auth-code-btn" id="forgot-send-code-btn" onclick="sendCode('reset')">
+                                获取验证码
+                            </button>
+                        </div>
+                    </div>
+                    <div class="auth-form-group">
+                        <label><i class="fas fa-lock"></i> 新密码</label>
+                        <input type="password" id="forgot-new-password" placeholder="至少6位新密码">
+                    </div>
+                    <div id="forgot-error" class="auth-error" style="display:none;"></div>
+                    <div id="forgot-success" class="auth-success" style="display:none;"></div>
+                    <button class="auth-submit-btn" onclick="handleResetPassword()">
+                        <i class="fas fa-key"></i> 重置密码
+                    </button>
+                    <div class="auth-links">
+                        <a href="javascript:void(0)" onclick="switchAuthView('login')">返回登录</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- ========== 主应用（登录后显示） ========== -->
+    <div id="app-container" class="app-container" style="display:none;">
+        <!-- 顶部导航栏 -->
+        <header class="header">
+            <div class="header-left">
+                <div class="logo">
+                    <i class="fas fa-balance-scale"></i>
+                </div>
+                <div class="title-group">
+                    <h1>法律智能助手</h1>
+                    <span class="subtitle">LangGraph 多智能体 · 5大功能</span>
+                </div>
+            </div>
+            <div class="header-right">
+                <button class="history-toggle-btn" onclick="toggleSidebar()" title="历史对话">
+                    <i class="fas fa-clock-rotate-left"></i>
+                </button>
+                <button class="new-chat-btn" onclick="newSession()" title="开启新对话">
+                    <i class="fas fa-plus"></i>
+                    <span>新对话</span>
+                </button>
+                <button class="logout-btn" onclick="handleLogout()" title="退出登录">
+                    <i class="fas fa-right-from-bracket"></i>
+                </button>
+            </div>
+        </header>
+
+        <!-- 主体区域 -->
+        <div class="main-content">
+            <!-- 历史对话侧边栏 -->
+            <div id="history-sidebar" class="history-sidebar">
+                <div class="sidebar-header">
+                    <span><i class="fas fa-clock-rotate-left"></i> 历史对话</span>
+                    <button class="sidebar-close-btn" onclick="toggleSidebar()" title="关闭">
+                        <i class="fas fa-xmark"></i>
+                    </button>
+                </div>
+                <!-- 搜索框 -->
+                <div class="sidebar-search">
+                    <i class="fas fa-search search-icon"></i>
+                    <input type="text" id="sidebar-search-input" placeholder="搜索对话内容..." oninput="debounceSearch()">
+                    <button class="search-clear-btn" id="search-clear-btn" onclick="clearSearch()" style="display:none;">
+                        <i class="fas fa-xmark"></i>
+                    </button>
+                </div>
+                <div id="sessions-list" class="sessions-list">
+                    <div class="sessions-empty">
+                        <i class="fas fa-inbox"></i>
+                        <p>暂无历史对话</p>
+                    </div>
+                </div>
+            </div>
+            <!-- 主内容区 -->
+            <div class="content-wrapper">
+            <!-- 欢迎页 -->
+            <div id="welcome-screen" class="welcome-screen">
+                <div class="welcome-header">
+                    <div class="welcome-icon">
+                        <i class="fas fa-balance-scale"></i>
+                    </div>
+                    <h2>你好，我是法律智能助手</h2>
+                    <p>基于 LangGraph 多智能体架构，提供专业法律服务</p>
+                </div>
+
+                <!-- 功能选择卡片 -->
+                <div class="feature-grid">
+                    <div class="feature-card" onclick="selectFeature('qa')" id="feature-qa">
+                        <div class="feature-card-icon">
+                            <i class="fas fa-comments"></i>
+                        </div>
+                        <div class="feature-card-title">法律问答</div>
+                        <div class="feature-card-desc">咨询劳动法、合同法等法律问题，AI智能检索法条回答</div>
+                        <div class="feature-card-tag">Router → Agent → Generator</div>
+                    </div>
+                    <div class="feature-card" onclick="selectFeature('contract_review')" id="feature-contract_review">
+                        <div class="feature-card-icon">
+                            <i class="fas fa-file-contract"></i>
+                        </div>
+                        <div class="feature-card-title">合同审查</div>
+                        <div class="feature-card-desc">粘贴合同文本，3位AI专家协作审查风险、合规性和修改建议</div>
+                        <div class="feature-card-tag">3 Agent 流水线</div>
+                    </div>
+                    <div class="feature-card" onclick="selectFeature('document_gen')" id="feature-document_gen">
+                        <div class="feature-card-icon">
+                            <i class="fas fa-pen-fancy"></i>
+                        </div>
+                        <div class="feature-card-title">文书生成</div>
+                        <div class="feature-card-desc">生成仲裁申请书、起诉状、律师函等法律文书</div>
+                        <div class="feature-card-tag">3 Agent 流水线</div>
+                    </div>
+                    <div class="feature-card" onclick="selectFeature('case_analysis')" id="feature-case_analysis">
+                        <div class="feature-card-icon">
+                            <i class="fas fa-chart-line"></i>
+                        </div>
+                        <div class="feature-card-title">案例分析</div>
+                        <div class="feature-card-desc">描述案情，AI分析事实、检索法条、评估胜诉率并给出策略</div>
+                        <div class="feature-card-tag">3 Agent 流水线</div>
+                    </div>
+                    <div class="feature-card" onclick="selectFeature('legal_calculator')" id="feature-legal_calculator">
+                        <div class="feature-card-icon">
+                            <i class="fas fa-calculator"></i>
+                        </div>
+                        <div class="feature-card-title">法律计算器</div>
+                        <div class="feature-card-desc">精确计算经济补偿金、违约金、逾期利息、损害赔偿、抚养费等</div>
+                        <div class="feature-card-tag">3 Agent 流水线</div>
+                    </div>
+                </div>
+
+                <div class="welcome-footer">
+                    <div class="feature-list">
+                        <div class="feature-item">
+                            <i class="fas fa-robot"></i>
+                            <span>13+ AI 专家协作</span>
+                        </div>
+                        <div class="feature-item">
+                            <i class="fas fa-search"></i>
+                            <span>RAG 知识库检索</span>
+                        </div>
+                        <div class="feature-item">
+                            <i class="fas fa-database"></i>
+                            <span>对话持久化存储</span>
+                        </div>
+                        <div class="feature-item">
+                            <i class="fas fa-calculator"></i>
+                            <span>法律精确计算</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 对话区域 -->
+            <div id="chat-area" class="chat-area" style="display: none;">
+                <!-- 当前功能标识 -->
+                <div id="current-feature-bar" class="current-feature-bar" style="display: none;">
+                    <span id="current-feature-label"></span>
+                    <button class="change-feature-btn" onclick="backToWelcome()">
+                        <i class="fas fa-exchange-alt"></i> 切换功能
+                    </button>
+                </div>
+                <div id="message-list" class="message-list">
+                </div>
+            </div>
+            </div><!-- .content-wrapper -->
+        </div>
+
+        <!-- 底部输入区 -->
+        <div class="input-section">
+            <div class="input-wrapper">
+                <input type="file" id="file-input" style="display: none;" 
+                       accept=".pdf,.docx,.txt,.md" onchange="handleFileSelect(event)">
+                <textarea 
+                    id="chat-input" 
+                    class="chat-input" 
+                    placeholder="输入你的法律问题，按 Enter 发送..." 
+                    rows="1"
+                    onkeydown="handleKeyDown(event)"
+                    oninput="autoResize(this)"
+                ></textarea>
+                <button id="upload-btn" class="upload-btn" onclick="document.getElementById('file-input').click()" title="上传合同文件" style="display: none;">
+                    <i class="fas fa-paperclip"></i>
+                </button>
+                <button id="send-btn" class="send-btn" onclick="sendMessage()">
+                    <i class="fas fa-paper-plane"></i>
+                </button>
+            </div>
+            <!-- 文件上传预览区域 -->
+            <div id="upload-preview" class="upload-preview" style="display: none;">
+                <i class="fas fa-file-alt upload-preview-icon"></i>
+                <span id="upload-preview-name" class="upload-preview-name"></span>
+                <span id="upload-preview-size" class="upload-preview-size"></span>
+                <button class="upload-preview-remove" onclick="removeFile()">
+                    <i class="fas fa-times"></i>
+                </button>
+            </div>
+            <div class="input-hint">
+                <i class="fas fa-info-circle"></i>
+                AI 生成内容仅供参考，不构成法律意见。具体法律问题请咨询专业律师。
+            </div>
+        </div>
+    </div>
+
+    <script src="/static/script.js"></script>
+</body>
+</html>
