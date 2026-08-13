@@ -1,0 +1,12 @@
+# 不需要打包进镜像的文件
+__pycache__/
+*.pyc
+.git/
+.gitignore
+.env
+venv/
+.venv/
+tests/
+*.md
+.idea/
+.vscode/
