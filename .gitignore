@@ -41,17 +41,17 @@ desktop.ini
 *.log
 
 # ========== 临时脚本 ==========
-fix_*.py
-add_*.py
-config_*.py
-verify_*.py
-test_*.py
-cleanup_temp.py
-find_frontend.py
-find_html.py
-find_markdown.py
-find_sources.py
-find_sources_render.py
-list_docs.py
-remove_preview.py
-style_close_btn.py
+/fix_*.py
+/add_*.py
+/config_*.py
+/verify_*.py
+/test_*.py
+/cleanup_temp.py
+/find_frontend.py
+/find_html.py
+/find_markdown.py
+/find_sources.py
+/find_sources_render.py
+/list_docs.py
+/remove_preview.py
+/style_close_btn.py
