@@ -14,8 +14,8 @@ from app.agent.contract_review.prompts import (
 # 所有 Agent 共用一个 LLM 实例（节省资源）
 llm = ChatOpenAI(
     model="deepseek-chat",
-    os.getenv("DEEPSEEK_BASE_URL", "https://api.deepseek.com"),
-    os.getenv("DEEPSEEK_API_KEY", ""),
+    base_url=os.getenv("DEEPSEEK_BASE_URL", "https://api.deepseek.com"),
+    api_key=os.getenv("DEEPSEEK_API_KEY", ""),
     temperature=0
 )
 

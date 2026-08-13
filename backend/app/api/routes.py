@@ -97,7 +97,7 @@ def init_graph():
     llm = ChatOpenAI(
         model="deepseek-chat",
         base_url="https://api.deepseek.com",
-        os.getenv("DEEPSEEK_API_KEY"),
+        api_key=os.getenv("DEEPSEEK_API_KEY"),
         temperature=0.7,
         streaming=True
     )

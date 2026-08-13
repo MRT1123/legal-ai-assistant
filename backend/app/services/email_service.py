@@ -37,9 +37,9 @@ class EmailService:
         self.enabled = bool(self.smtp_host and self.smtp_user and self.smtp_pass)
         
         if self.enabled:
-            print(f"📧 邮件服务已启用 SMTP：{self.smtp_host}:{self.smtp_port}")
+            print(f"[邮件] 邮件服务已启用 SMTP：{self.smtp_host}:{self.smtp_port}")
         else:
-            print("📧 邮件服务处于开发模式（验证码将打印到控制台，不实际发送）")
+            print("[邮件] 邮件服务处于开发模式（验证码将打印到控制台，不实际发送）")
 
     def generate_code(self, length: int = 6) -> str:
         """
