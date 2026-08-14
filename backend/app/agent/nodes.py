@@ -105,8 +105,18 @@ def generator_node(state: AgentState) -> dict:
             context_parts.append(str(doc))
     context = "\n\n---\n\n".join(context_parts)
     
+    # 提取对话历史（最近3轮，6条消息）
+    messages = state.get('messages', [])
+    chat_history = ''
+    if messages:
+        history_parts = []
+        for msg in messages[-6:]:
+            role = '用户' if msg.type == 'human' else '助手'
+            history_parts.append(f'{role}：{msg.content}')
+        chat_history = '\n'.join(history_parts)
+
     # 让 LLM 基于检索结果生成回答
-    prompt = GENERATOR_PROMPT.format(query=query, context=context)
+    prompt = GENERATOR_PROMPT.format(query=query, context=context, chat_history=chat_history)
     response = llm.invoke(prompt)
     
     answer = response.content
